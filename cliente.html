@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Cliente | Pinto Basto</title>
+  <link rel="stylesheet" href="cliente.css">
+</head>
+<body>
+  <header class="client-topbar">
+    <div class="brand" onclick="showClientPage('home')">
+      <img src="assets/pinto-basto-logo.png" alt="Pinto Basto">
+      <div>
+        <h1>Portal Cliente</h1>
+        <p id="clientLine">A carregar...</p>
+      </div>
+    </div>
+
+    <nav>
+      <button onclick="showClientPage('home')">Empresa</button>
+      <button onclick="showClientPage('equipa')">Equipa</button>
+      <button onclick="showClientPage('chat')">Chat</button>
+      <button onclick="showClientPage('videos')">Vídeos</button>
+      <button onclick="showClientPage('settings')">Definições</button>
+      <button class="danger" onclick="clientLogout()">Sair</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section id="home" class="client-page active">
+      <div class="client-hero">
+        <div>
+          <span class="tag">Bem-vindo à Pinto Basto</span>
+          <h2>Um parceiro de confiança para soluções empresariais e logísticas.</h2>
+          <p>
+            Este portal foi criado para clientes acompanharem contactos, conhecerem a equipa,
+            conversarem com a empresa e consultarem informação institucional.
+          </p>
+          <div class="actions">
+            <button class="primary" onclick="showClientPage('chat')">Falar com a equipa</button>
+            <button onclick="showClientPage('equipa')">Ver contactos</button>
+          </div>
+        </div>
+        <div class="client-card">
+          <h3>A tua área</h3>
+          <p><b>Cliente:</b> <span id="profileClientName"></span></p>
+          <p><b>Empresa:</b> <span id="profileClientCompany"></span></p>
+          <p><b>ID:</b> <span id="profileClientId"></span></p>
+          <p><b>Tipo:</b> <span id="profileClientType"></span></p>
+        </div>
+      </div>
+
+      <div class="info-grid">
+        <article><strong>+100 anos</strong><span>Experiência empresarial</span></article>
+        <article><strong>Global</strong><span>Rede de contactos e parceiros</span></article>
+        <article><strong>360º</strong><span>Acompanhamento personalizado</span></article>
+        <article><strong>Suporte</strong><span>Equipa pronta para ajudar</span></article>
+      </div>
+
+      <div class="content-grid">
+        <article class="panel">
+          <h3>Sobre a empresa</h3>
+          <p>A Pinto Basto é apresentada neste portal como uma empresa focada em organização, acompanhamento de clientes, comunicação profissional e gestão de relações empresariais.</p>
+        </article>
+        <article class="panel">
+          <h3>O que podes fazer aqui</h3>
+          <ul>
+            <li>Falar com colaboradores da empresa.</li>
+            <li>Ver lista de contactos internos.</li>
+            <li>Consultar vídeos institucionais.</li>
+            <li>Gerir os teus dados de cliente.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="equipa" class="client-page">
+      <div class="page-title">
+        <div>
+          <h2>Equipa Pinto Basto</h2>
+          <p>Lista de contas internas disponíveis para contacto.</p>
+        </div>
+      </div>
+      <input id="teamSearch" oninput="renderTeam()" placeholder="Pesquisar por nome, cargo, departamento...">
+      <div id="teamGrid" class="team-grid"></div>
+    </section>
+
+    <section id="chat" class="client-page">
+      <div class="page-title">
+        <div>
+          <h2>Chat com a empresa</h2>
+          <p>Escolhe uma conta interna e envia mensagens.</p>
+        </div>
+      </div>
+
+      <div class="chat-layout">
+        <aside class="panel users">
+          <h3>Contas da empresa</h3>
+          <div id="clientTeamList"></div>
+        </aside>
+
+        <section class="panel chat-panel">
+          <div class="chat-head">
+            <h3 id="clientChatName">Seleciona uma pessoa</h3>
+            <p id="clientChatMeta">Histórico interligado entre cliente e equipa.</p>
+          </div>
+          <div id="clientMessages" class="messages"><div class="empty">Seleciona alguém da empresa.</div></div>
+          <div class="compose">
+            <textarea id="clientMessageText" placeholder="Escreve a mensagem..."></textarea>
+            <button class="primary" onclick="sendClientMessage()">Enviar</button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section id="videos" class="client-page">
+      <div class="page-title">
+        <div>
+          <h2>Vídeos institucionais</h2>
+          <p>Conteúdos para apresentar serviços, equipa e acompanhamento.</p>
+        </div>
+      </div>
+      
+      
+      <div class="video-grid single-video-grid">
+        <article class="panel video-card video-card-main">
+          <video controls preload="metadata" style="width:100%; border-radius:18px;">
+            <source src="assets/video-principal.mp4" type="video/mp4">
+            O teu navegador não suporta vídeo HTML5.
+          </video>
+          <h3>Vídeo oficial Pinto Basto CRM</h3>
+          <p>Apresentação premium com imagens reais da aplicação: dashboard, CRM Lista, interações, chat, personalização e base de dados online.</p>
+        </article>
+      </div>
+
+    </section>
+
+    <section id="settings" class="client-page">
+      <div class="page-title">
+        <div>
+          <h2>Definições do cliente</h2>
+          <p>Atualiza os teus dados e preferências.</p>
+        </div>
+      </div>
+
+      <div class="settings-grid">
+        <article class="panel">
+          <h3>Dados pessoais</h3>
+          <div class="grid">
+            <label>Nome<input id="setClientName"></label>
+            <label>Empresa<input id="setClientCompany"></label>
+            <label>Cargo<input id="setClientRole"></label>
+            <label>Telefone<input id="setClientPhone"></label>
+            <label>País<input id="setClientCountry"></label>
+            <label>Tipo<select id="setClientType"><option>Cliente atual</option><option>Potencial cliente</option><option>Parceiro</option><option>Fornecedor</option></select></label>
+          </div>
+          <button class="primary" onclick="saveClientSettings()">Guardar</button>
+        </article>
+
+        <article class="panel">
+          <h3>Preferências</h3>
+          <label class="toggle"><input type="checkbox" id="setClientNotifications"> Ativar notificações internas</label>
+          <label>Tema visual<select id="setClientTheme" onchange="applyClientThemePreview()"><option value="classic">Clássico</option><option value="premium">Premium escuro</option><option value="light">Claro</option></select></label>
+          <button onclick="saveClientSettings()">Aplicar preferências</button>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="clientToast"></div>
+
+  <script src="local-auth.js"></script>
+  <script src="client-auth.js"></script>
+  <script src="sheets-api.js"></script>
+  <script src="cliente.js"></script>
+  <script src="sheets-account-final.js"></script>
+  <script src="sheets-sync-bridge.js"></script>
+  <script src="video-fix.js"></script>
+</body>
+</html>

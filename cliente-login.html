@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Cliente — Pinto Basto CRM</title>
+  <link rel="stylesheet" href="cliente-login.css">
+</head>
+<body>
+  <main class="auth-shell">
+    <section class="auth-card">
+      <div class="brand-side">
+        <div class="logo-box">
+          <img src="assets/pinto-basto-logo.png" alt="Pinto Basto">
+        </div>
+      </div>
+
+      <div class="form-side">
+        <span class="badge">Portal cliente premium</span>
+        <h1>Portal Cliente</h1>
+        <p>Acesso reservado para clientes acompanharem informação, contactos, mensagens e atualizações.</p>
+
+        <form onsubmit="submitClientAuth(event)">
+          <div class="form-grid">
+            <div>
+              <label for="clientEmail">Email</label>
+              <input id="clientEmail" type="email" placeholder="cliente@empresa.pt" autocomplete="email" required>
+            </div>
+
+            <div>
+              <label for="clientPassword">Palavra-passe</label>
+              <input id="clientPassword" type="password" placeholder="mínimo 4 caracteres" autocomplete="current-password" required>
+            </div>
+          </div>
+
+          <button id="clientSubmitBtn" type="submit">Entrar</button>
+
+          <div id="clientAuthError"></div>
+          <p class="private-auth-note">Acesso privado — contas geridas pela empresa na base de dados.</p>
+        </form>
+
+        <div class="demo-center">
+          <button type="button" onclick="fillClientDemo()">Preencher demo</button>
+        </div>
+
+        <div class="chips">
+          <span>Portal cliente</span>
+          <span>Chat direto</span>
+          <span>Contactos</span>
+          <span>Atualizações</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="client-auth.js"></script>
+  <script src="sheets-api.js"></script>
+  <script src="cliente-login.js"></script>
+  <script src="private-auth.js"></script>
+  <script src="login-ui-final.js"></script>
+</body>
+</html>

@@ -1,0 +1,521 @@
+
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pinto Basto CRM Premium</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand" onclick="showPage('dashboard')">
+      <img src="assets/pinto-basto-logo.png" alt="Pinto Basto">
+      <div>
+        <h1>Pinto Basto CRM</h1>
+        <p id="userLine">A carregar...</p>
+      </div>
+    </div>
+    <button class="mobile" onclick="toggleNav()">☰</button>
+    <nav id="nav">
+      <button onclick="showPage('dashboard')">Dashboard</button>
+      <button onclick="showPage('clientes')">Clientes</button>
+      <button onclick="showPage('crmPower')">CRM Lista</button>
+      <button onclick="showPage('reuniao')">Reunião</button>
+      <button onclick="showPage('chat')">Chat</button>
+      <button onclick="showPage('videos')">Vídeos</button>
+      <button onclick="toggleNotifications()">🔔 <span id="notificationBadge">0</span></button>
+      <button onclick="showPage('settings')">Definições</button>
+      <button class="danger" onclick="logout()">Sair</button>
+    </nav>
+  </header>
+
+  <aside id="notificationPanel" class="notification-panel">
+    <div class="notification-head">
+      <div>
+        <h3>Notificações</h3>
+        <p>Eventos reais da aplicação</p>
+      </div>
+      <button onclick="markNotificationsRead()">Marcar lidas</button>
+    </div>
+    <div id="notificationList"></div>
+  </aside>
+
+  <main class="container">
+    <section id="dashboard" class="page active">
+      <div class="hero">
+        <div>
+          <span class="tag">Experiência Premium</span>
+          <h2>Um centro de controlo empresarial para a Pinto Basto.</h2>
+          <p>Clientes, operações, interações, reuniões, áudio, chat interno, tarefas e relatórios num menu elegante e centralizado.</p>
+          <div class="actions">
+            <button class="primary" onclick="showPage('reuniao')">Nova interação</button>
+            <button onclick="showPage('clientes')">Explorar clientes</button>
+            <button onclick="showPage('videos')">Ver vídeos</button>
+          </div>
+        </div>
+        <div class="hero-dashboard">
+          <div class="hero-stat"><strong id="heroScore">94%</strong><span>Saúde comercial</span></div>
+          <div class="mini-chart"><span style="height:45%"></span><span style="height:78%"></span><span style="height:62%"></span><span style="height:90%"></span><span style="height:70%"></span></div>
+          <div class="hero-alert">3 clientes precisam de seguimento esta semana</div>
+        </div>
+      </div>
+
+      <div class="stats">
+        <article><strong id="statClients">0</strong><span>Clientes</span><small>+12% este mês</small></article>
+        <article><strong id="statInteractions">0</strong><span>Interações</span><small>histórico ativo</small></article>
+        <article><strong id="statMessages">0</strong><span>Mensagens</span><small>chat interno</small></article>
+        <article><strong id="statUsers">0</strong><span>Utilizadores</span><small>contas locais</small></article>
+      </div>
+
+      <div class="dashboard-grid">
+        <article class="panel">
+          <h3>Pipeline comercial</h3>
+          <div class="pipeline">
+            <div><b>Prospetos</b><span>18</span></div><div><b>Em negociação</b><span>7</span></div><div><b>Propostas</b><span>4</span></div><div><b>Fechados</b><span>11</span></div>
+          </div>
+        </article>
+        <article class="panel">
+          <h3>Interações por canal</h3>
+          <div class="bars"><p><span style="width:85%"></span>Reuniões</p><p><span style="width:65%"></span>Chamadas</p><p><span style="width:50%"></span>Email</p><p><span style="width:35%"></span>Visitas</p></div>
+        </article>
+        <article class="panel priorities-panel">
+          <div class="panel-head">
+            <div>
+              <h3>Prioridades</h3>
+              <p class="muted small">Tarefas importantes definidas pela administração.</p>
+            </div>
+            <span id="priorityAdminBadge" class="admin-badge">Admin</span>
+          </div>
+
+          <ul id="priorityList" class="tasks priority-list"></ul>
+
+          <div id="priorityAdminBox" class="priority-admin-box">
+            <input id="priorityInput" placeholder="Nova prioridade...">
+            <button class="primary" onclick="addPriority()">Adicionar</button>
+          </div>
+
+          <p id="priorityReadOnly" class="readonly-note">Só o administrador pode alterar prioridades.</p>
+        </article>
+      </div>
+    </section>
+
+
+    <section id="crmPower" class="page">
+      <div class="page-title">
+        <div>
+          <h2>CRM de Clientes</h2>
+          <p>Vista rápida estilo Power Apps: clientes, filtros, detalhe, alertas e histórico.</p>
+        </div>
+        <button class="primary" onclick="openPowerClientNew()">+ Novo cliente</button>
+      </div>
+
+      <div class="power-layout">
+        <aside class="power-sidebar panel">
+          <h3>Clientes</h3>
+
+          <div class="power-search">
+            <input id="powerSearch" oninput="renderPowerCRM()" placeholder="Procurar cliente...">
+          </div>
+
+          <div class="power-filters">
+            <label>Cliente
+              <select id="powerClientFilter" onchange="renderPowerCRM()">
+                <option value="">Todos</option>
+              </select>
+            </label>
+
+            <label>País
+              <select id="powerCountryFilter" onchange="renderPowerCRM()">
+                <option value="">Todos</option>
+              </select>
+            </label>
+
+            <label>Estado Cliente
+              <select id="powerStatusFilter" onchange="renderPowerCRM()">
+                <option value="">Todos</option>
+                <option>Ativo</option>
+                <option>Pendente</option>
+                <option>Em negociação</option>
+                <option>Inativo</option>
+                <option>Novo</option>
+              </select>
+            </label>
+
+            <label>Tipo Cliente
+              <select id="powerTypeFilter" onchange="renderPowerCRM()">
+                <option value="">Todos</option>
+                <option>Cliente atual</option>
+                <option>Potencial cliente</option>
+                <option>Cliente antigo</option>
+                <option>Parceiro</option>
+                <option>Fornecedor</option>
+              </select>
+            </label>
+
+            <button onclick="clearPowerFilters()">Limpar filtros</button>
+          </div>
+
+          <div id="powerClientList" class="power-client-list"></div>
+        </aside>
+
+        <section class="power-detail panel">
+          <div id="powerEmpty" class="power-empty">
+            Seleciona um cliente para ver informação detalhada.
+          </div>
+
+          <div id="powerDetailContent" class="hidden">
+            <div class="power-detail-head">
+              <div>
+                <span id="powerStatusDot" class="power-dot"></span>
+                <h3 id="powerClientName">Cliente</h3>
+                <p id="powerClientSub">Informação geral</p>
+              </div>
+              <div class="power-actions">
+                <button onclick="startPowerInteraction()">Nova interação</button>
+                <button onclick="deletePowerClient()">Apagar</button>
+              </div>
+            </div>
+
+            <div class="power-tabs">
+              <button class="active" onclick="setPowerTab('info', this)">Informação Geral</button>
+              <button onclick="setPowerTab('users', this)">Gestão Utilizadores</button>
+              <button onclick="setPowerTab('alerts', this)">Alertas</button>
+              <button onclick="setPowerTab('history', this)">Histórico</button>
+            </div>
+
+            <div id="powerTabInfo" class="power-tab active">
+              <div class="power-fields">
+                <label>Lead<input id="powerLead"></label>
+                <label>Estado Cliente<div class="status-only-label">Escolhe nos botões abaixo</div><select id="powerEstado">
+                    <option>Lead</option>
+                    <option>Novo</option>
+                    <option>Pendente</option>
+                    <option>Em negociação</option>
+                    <option>Ativo</option>
+                    <option>Inativo</option>
+                    <option>Perdido</option>
+                  </select></label>
+                <label>Tipo Cliente<select id="powerTipo"><option>Cliente atual</option><option>Potencial cliente</option><option>Cliente antigo</option><option>Parceiro</option><option>Fornecedor</option></select></label>
+                <label>NIF<input id="powerNif"></label>
+                <label>País<input id="powerPais"></label>
+                <label>Domínio Email<input id="powerDominio"></label>
+                <label>Morada Sede<input id="powerMorada"></label>
+                <label>dynamics_number<input id="powerDynamics"></label>
+                <label>Nº dias alerta inatividade<input id="powerAlertDays" type="number" min="1"></label>
+                <label>Última interação/alerta<input id="powerLastInteraction" disabled></label>
+              </div>
+              <button class="primary" onclick="savePowerClient()">Guardar alterações</button>
+            </div>
+
+            <div id="powerTabUsers" class="power-tab">
+              <div class="power-add-row">
+                <input id="powerUserName" placeholder="Nome do utilizador/contacto">
+                <input id="powerUserRole" placeholder="Cargo / função">
+                <input id="powerUserEmail" placeholder="Email">
+                <button onclick="addPowerUser()">Adicionar</button>
+              </div>
+              <div id="powerUsersList" class="power-users-list"></div>
+            </div>
+
+            <div id="powerTabAlerts" class="power-tab">
+              <div id="powerAlertsBox" class="power-alerts-box"></div>
+            </div>
+
+            <div id="powerTabHistory" class="power-tab">
+              <div id="powerHistoryList" class="power-history-list"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section id="clientes" class="page">
+      <div class="page-title"><div><h2>Clientes</h2><p>Informação detalhada, filtros e ações rápidas.</p></div><button class="primary" onclick="addClient()">+ Cliente</button></div>
+      <input id="clientSearch" oninput="renderClients()" placeholder="Pesquisar cliente...">
+      <div id="clientGrid" class="client-grid"></div>
+    </section>
+
+    <section id="reuniao" class="page">
+      <div class="page-title">
+        <div>
+          <h2>Nova interação estruturada</h2>
+          <p>Grava áudio, transcreve automaticamente, separa falas, identifica pessoas por turnos e gera resumo profissional.</p>
+        </div>
+        <span class="pill" id="recordStatus">Pronto</span>
+      </div>
+
+      <div class="quick-interaction panel">
+        <h3>Interação rápida</h3>
+        <div class="quick-grid">
+          <label>Nome Cliente obrigatório<select id="quickClient"></select></label>
+          <label>Tipo de Interação obrigatório<select id="quickType"><option>Reunião</option><option>Chamada</option><option>Email</option><option>Visita</option></select></label>
+        </div>
+        <textarea id="quickText" placeholder="Interação..."></textarea>
+        <button class="primary" onclick="saveQuickInteraction()">🎤 Iniciar / Guardar interação rápida</button>
+      </div>
+
+      <div class="interaction-layout">
+        <article class="panel interaction-card">
+          <h3>1. Dados principais</h3>
+          <div class="grid">
+            <label>Cliente<select id="meetingClient"></select></label>
+            <label>Tipo<select id="meetingType"><option>Reunião online</option><option>Chamada telefónica</option><option>Email</option><option>Visita presencial</option><option>Nota interna</option></select></label>
+            <label>Responsável<input id="meetingOwner"></label>
+            <label>Estado<select id="meetingStatus"><option>Concluída</option><option>Pendente</option><option>A acompanhar</option><option>Requer resposta</option></select></label>
+            <label>Pessoa contactada<input id="meetingContact" placeholder="Nome do cliente/contacto"></label>
+            <label>Cargo<input id="meetingRole" placeholder="Cargo da pessoa"></label>
+            <label>Canal<select id="meetingChannel"><option>Teams</option><option>Telefone</option><option>Email</option><option>Presencial</option><option>WhatsApp</option></select></label>
+            <label>Follow-up<input id="followDate" type="date"></label>
+          </div>
+        </article>
+
+        <article class="panel interaction-card">
+          <h3>2. Áudio e transcrição ao vivo</h3>
+          <p class="muted">Ao gravar, a app tenta escrever automaticamente as falas. A deteção de pessoas é local e baseada em pausas/turnos.</p>
+
+          <div class="audio-toolbar">
+            <button class="danger" onclick="startRecording()">🎤 Gravar + transcrever</button>
+            <button onclick="pauseRecording()">Pausar</button>
+            <button onclick="resumeRecording()">Continuar</button>
+            <button onclick="stopRecording()">Parar</button>
+            <button onclick="playAudio()">Ouvir</button>
+          </div>
+
+          <div class="audio-status-grid">
+            <div><strong id="timer">00:00</strong><span>Duração</span></div>
+            <div><strong id="speechState">Inativo</strong><span>Transcrição</span></div>
+            <div><strong id="speakerState">Pessoa 1</strong><span>Falante atual</span></div>
+          </div>
+
+          <canvas id="audioMeter" height="56"></canvas>
+          <audio id="audio" controls></audio>
+          <p class="muted" id="audioInfo">Sem áudio.</p>
+
+          <div class="audio-options">
+            <label><input type="checkbox" id="autoTranscribe" checked> Transcrever automaticamente enquanto grava</label>
+            <label><input type="checkbox" id="autoSpeaker" checked> Identificar falantes automaticamente por pausas</label>
+            <label><input type="checkbox" id="autoSummary" checked> Gerar resumo ao parar</label>
+          </div>
+        </article>
+
+        <article class="panel full">
+          <div class="section-split">
+            <div>
+              <h3>3. Falas da conversa</h3>
+              <p class="muted">A app organiza a conversa por falas. Podes corrigir os nomes depois.</p>
+            </div>
+            <div class="speaker-tools">
+              <button id="operatorBtn" class="selected" onclick="setSpeaker('Operador')">Operador</button>
+              <button id="clientBtn" onclick="setSpeaker('Cliente')">Cliente</button>
+              <button onclick="setSpeaker('Pessoa 1')">Pessoa 1</button>
+              <button onclick="setSpeaker('Pessoa 2')">Pessoa 2</button>
+              <button onclick="setSpeaker('Pessoa 3')">Pessoa 3</button>
+              <button onclick="addManualLine()">Adicionar fala</button>
+            </div>
+          </div>
+
+          <div id="speechCards" class="speech-cards">
+            <div class="empty">As falas vão aparecer aqui automaticamente.</div>
+          </div>
+
+          <textarea id="transcript" placeholder="Transcrição completa..."></textarea>
+        </article>
+
+        <article class="panel full">
+          <div class="section-split">
+            <div>
+              <h3>4. Resumo profissional</h3>
+              <p class="muted">Resumo com decisões, temas, riscos, próximos passos e responsáveis.</p>
+            </div>
+            <button class="primary" onclick="generateSummary()">Gerar resumo</button>
+          </div>
+
+          <div class="summary-grid">
+            <textarea id="summary" placeholder="Resumo executivo..."></textarea>
+            <div class="summary-side">
+              <h4>Estrutura detetada</h4>
+              <ul id="summaryBullets">
+                <li>Ainda sem dados suficientes.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="summary-actions">
+            <button onclick="saveInteraction()">Guardar interação</button>
+            <button onclick="exportTXT()">Exportar TXT</button>
+            <button onclick="exportStructuredJSON()">Exportar JSON</button>
+            <button onclick="clearInteraction()">Limpar interação</button>
+          </div>
+        </article>
+
+        <article class="panel full">
+          <h3>5. Histórico estruturado da sessão</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Hora</th>
+                  <th>Falante</th>
+                  <th>Texto</th>
+                  <th>Tipo</th>
+                </tr>
+              </thead>
+              <tbody id="sessionTable"></tbody>
+            </table>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="chat"<section id="chat" class="page">
+      <div class="page-title"><div><h2>Chat interno local</h2><p>Comunicação entre contas deste browser.</p></div></div>
+      <div class="chat-layout"><aside class="panel users"><h3>Utilizadores</h3><div id="usersList"></div></aside><section class="panel chat-panel"><div class="chat-head"><h3 id="chatName">Seleciona um utilizador</h3><p id="chatMeta">Histórico interligado entre cliente e equipa.</p></div><div id="messages" class="messages"><div class="empty">Seleciona um utilizador.</div></div><div class="compose"><textarea id="messageText" placeholder="Escreve a mensagem..."></textarea><button class="primary" onclick="sendMessage()">Enviar</button></div></section></div>
+    </section>
+
+    <section id="videos" class="page">
+      <div class="page-title"><div><h2>Vídeos de demonstração</h2><p>Vídeos criados para apresentar a app de forma profissional.</p></div></div>
+      
+      
+      <div class="video-grid single-video-grid">
+        <article class="panel video-card video-card-main">
+          <video controls preload="metadata" style="width:100%; border-radius:18px;">
+            <source src="assets/video-principal.mp4" type="video/mp4">
+            O teu navegador não suporta vídeo HTML5.
+          </video>
+          <h3>Vídeo oficial Pinto Basto CRM</h3>
+          <p>Apresentação premium com imagens reais da aplicação: dashboard, CRM Lista, interações, chat, personalização e base de dados online.</p>
+        </article>
+      </div>
+
+    </section>
+
+    <section id="settings" class="page">
+      <div class="page-title">
+        <div>
+          <h2>Definições profissionais</h2>
+          <p>Personaliza perfil, aparência, animações, notificações, dados e comportamento da aplicação.</p>
+        </div>
+        <button class="primary" onclick="saveSettings()">Guardar tudo</button>
+      </div>
+
+      <div class="settings-dashboard">
+        <article class="panel settings-card">
+          <h3>Perfil profissional</h3>
+          <div class="grid">
+            <label>Nome<input id="setName"></label>
+            <label>Cargo<input id="setRole"></label>
+            <label>Departamento<select id="setDepartment"><option>Comercial</option><option>Operações</option><option>Financeiro</option><option>Direção</option><option>Suporte</option><option>Administração</option></select></label>
+            <label>Telefone<input id="setPhone"></label>
+            <label>Escritório<input id="setOffice"></label>
+            <label>Função<select id="setAppRole"><option>Administrador</option><option>Gestor</option><option>Colaborador</option></select></label>
+          </div>
+        </article>
+
+        <article class="panel settings-card">
+          <h3>Aparência da aplicação</h3>
+          <div class="grid">
+            <label>Tema visual
+              <select id="setTheme" onchange="previewSettings()">
+                <option value="classic">Pinto Basto Clássico</option>
+                <option value="premium">Premium Escuro</option>
+                <option value="light">Claro Executivo</option>
+                <option value="ocean">Azul Oceano</option>
+                <option value="gold">Dourado Corporativo</option>
+              </select>
+            </label>
+
+            <label>Densidade
+              <select id="setDensity" onchange="previewSettings()">
+                <option value="comfortable">Confortável</option>
+                <option value="compact">Compacta</option>
+                <option value="spacious">Espaçosa</option>
+              </select>
+            </label>
+
+            <label>Arredondamento
+              <select id="setRadius" onchange="previewSettings()">
+                <option value="soft">Suave</option>
+                <option value="round">Muito arredondado</option>
+                <option value="sharp">Mais reto</option>
+              </select>
+            </label>
+
+            <label>Tamanho da fonte
+              <select id="setFontSize" onchange="previewSettings()">
+                <option value="normal">Normal</option>
+                <option value="large">Grande</option>
+                <option value="small">Pequena</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="theme-preview">
+            <div class="preview-card">
+              <strong>Pré-visualização</strong>
+              <span>Cartão premium com o estilo escolhido</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel settings-card">
+          <h3>Animações e experiência</h3>
+          <label class="toggle"><input type="checkbox" id="setAnimations" onchange="previewSettings()"> Ativar animações suaves</label>
+          <label class="toggle"><input type="checkbox" id="setGlass" onchange="previewSettings()"> Ativar efeito vidro no menu</label>
+          <label class="toggle"><input type="checkbox" id="setShadows" onchange="previewSettings()"> Sombras premium nos cartões</label>
+          <label class="toggle"><input type="checkbox" id="setHover" onchange="previewSettings()"> Efeitos ao passar o rato</label>
+          <label class="toggle"><input type="checkbox" id="setReduceMotion" onchange="previewSettings()"> Reduzir movimento</label>
+        </article>
+
+        <article class="panel settings-card">
+          <h3>Notificações funcionais</h3>
+          <label class="toggle"><input type="checkbox" id="setNotifications"> Ativar notificações internas</label>
+          <label class="toggle"><input type="checkbox" id="setBrowserNotifications"> Pedir notificações do browser</label>
+          <label class="toggle"><input type="checkbox" id="setNotifyTasks"> Alertar tarefas pendentes</label>
+          <label class="toggle"><input type="checkbox" id="setNotifyInteractions"> Alertar interações sem resumo</label>
+          <label class="toggle"><input type="checkbox" id="setNotifyMessages"> Alertar novas mensagens</label>
+          <button onclick="requestBrowserNotifications()">Permitir notificações do browser</button>
+          <button onclick="createTestNotification()">Criar notificação de teste</button>
+        </article>
+
+        <article class="panel settings-card">
+          <h3>Comportamento e dados</h3>
+          <label class="toggle"><input type="checkbox" id="setAutoSave"> Guardar automaticamente interações</label>
+          <label class="toggle"><input type="checkbox" id="setAutoSummary"> Gerar resumo ao terminar gravação</label>
+          <label class="toggle"><input type="checkbox" id="setConfirmDelete"> Confirmar antes de limpar dados</label>
+          <label class="toggle"><input type="checkbox" id="setRememberLastPage"> Reabrir na última página usada</label>
+          <div class="settings-actions">
+            <button onclick="exportAllData()">Exportar backup JSON</button>
+            <button onclick="importDataPrompt()">Importar backup</button>
+            <button class="danger" onclick="clearLocalData()">Limpar dados locais</button>
+          </div>
+        </article>
+
+        <article class="panel settings-card">
+          <h3>Estado da aplicação</h3>
+          <div class="app-health">
+            <div><strong id="healthUsers">0</strong><span>Utilizadores</span></div>
+            <div><strong id="healthClients">0</strong><span>Clientes</span></div>
+            <div><strong id="healthInteractions">0</strong><span>Interações</span></div>
+            <div><strong id="healthMessages">0</strong><span>Mensagens</span></div>
+            <div><strong id="healthNotifications">0</strong><span>Notificações</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast"></div>
+  <script src="local-auth.js"></script>
+  <script src="sheets-api.js"></script>
+  <script src="app.js"></script>
+  <script src="client-status-buttons-fix.js"></script>
+  <script src="data-charts-interactions-fix.js"></script>
+  <script src="client-status-fix.js"></script>
+  <script src="notifications-read-fix.js"></script>
+  <script src="sheets-account-final.js"></script>
+  <script src="sheets-interactions-show-fix.js"></script>
+  <script src="sheets-sync-bridge.js"></script>
+  <script src="video-fix.js"></script>
+</body>
+</html>

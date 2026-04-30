@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720">
+<defs><linearGradient id="g" x1="0" x2="1"><stop stop-color="#0b376d"/><stop offset="1" stop-color="#87884f"/></linearGradient></defs>
+<rect width="1280" height="720" fill="url(#g)"/>
+<circle cx="1000" cy="140" r="190" fill="rgba(255,255,255,.16)"/>
+<text x="90" y="285" fill="white" font-family="Arial" font-size="72" font-weight="bold">Pinto Basto CRM</text>
+<text x="94" y="365" fill="white" font-family="Arial" font-size="34">Carrega no play para ver a demonstração</text>
+<polygon points="610,455 610,565 710,510" fill="white"/>
+</svg>

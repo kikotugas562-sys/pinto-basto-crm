@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pinto Basto CRM Premium</title>
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <main class="auth-shell">
+    <section class="auth-card">
+      <div class="brand-side">
+        <div class="logo-box">
+          <img src="assets/pinto-basto-logo.png" alt="Pinto Basto">
+        </div>
+      </div>
+
+      <div class="form-side">
+        <span class="badge">Acesso interno premium</span>
+        <h1>Pinto Basto CRM</h1>
+        <p>Plataforma empresarial para clientes, interações, reuniões, voz, chat interno e relatórios.</p>
+
+        <form onsubmit="submitAuth(event)">
+          <div class="form-grid">
+            <div>
+              <label for="email">Email</label>
+              <input id="email" type="email" placeholder="nome@pintobasto.pt" autocomplete="email" required>
+            </div>
+
+            <div>
+              <label for="password">Palavra-passe</label>
+              <input id="password" type="password" placeholder="mínimo 4 caracteres" autocomplete="current-password" required>
+            </div>
+          </div>
+
+          <button id="submitBtn" type="submit">Entrar</button>
+
+          <div id="authError"></div>
+          <p class="private-auth-note">Acesso privado — contas geridas pela empresa na base de dados.</p>
+        </form>
+
+        <div class="demo-center">
+          <button type="button" onclick="fillDemo()">Preencher demo</button>
+        </div>
+
+        <div class="chips">
+          <span>Dashboard premium</span>
+          <span>Chat local</span>
+          <span>Voz e resumo</span>
+          <span>Relatórios</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="local-auth.js"></script>
+  <script src="sheets-api.js"></script>
+  <script src="login.js"></script>
+  <script src="private-auth.js"></script>
+  <script src="admin-login-final-fix.js"></script>
+  <script src="login-ui-final.js"></script>
+</body>
+</html>
