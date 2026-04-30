@@ -833,3 +833,71 @@ body.theme-premium.glass-nav .topbar{
   .interaction-detail-grid{grid-template-columns:1fr}
   .real-bar-row{grid-template-columns:1fr}
 }
+
+
+/* CHAT USERS FROM SHEETS FIX */
+.chat-user-row{
+  cursor:pointer;
+  transition:.18s ease;
+}
+.chat-user-row:hover{
+  transform:translateY(-1px);
+  box-shadow:0 10px 24px rgba(11,55,109,.10);
+}
+.chat-user-row.active{
+  border-color:#0B376D !important;
+  background:#f3f8ff !important;
+}
+.chat-user-row small{
+  display:block;
+  color:#64748b;
+  margin-top:4px;
+  font-size:12px;
+}
+
+
+/* MOBILE NOTIFICATIONS CLOSE FIX */
+.notification-close-btn{
+  position:absolute;
+  top:10px;
+  right:10px;
+  width:34px;
+  height:34px;
+  border-radius:999px;
+  border:0;
+  background:#fee2e2;
+  color:#991b1b;
+  font-size:24px;
+  line-height:1;
+  font-weight:900;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:20;
+  box-shadow:0 8px 18px rgba(0,0,0,.12);
+}
+
+#notificationPanel{
+  position:relative;
+}
+
+@media(max-width:760px){
+  #notificationPanel{
+    position:fixed !important;
+    top:82px !important;
+    left:14px !important;
+    right:14px !important;
+    width:auto !important;
+    max-width:none !important;
+    max-height:calc(100vh - 110px) !important;
+    overflow:auto !important;
+    z-index:9999 !important;
+    border-radius:22px !important;
+    padding-top:52px !important;
+  }
+
+  .notification-close-btn{
+    display:flex !important;
+  }
+}
